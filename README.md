@@ -1,3 +1,3 @@
-# cmsc-105
+# cmsc-105 Com Sci Statistics
 
-SIR LAO DAYS
+SIR LAO DAYS... :)
