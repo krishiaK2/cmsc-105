@@ -1,5 +1,18 @@
+import os
 import random
 import math
+
+#kung wala kang maKitang built-in function (even though im sure naa), GUMAWA KA NA LANG UY! :p
+def digit_ni_sya(s):
+	for i in s:
+		if i[0] is "-":
+			i.replace("-", "")
+			for j in i:
+				if j.isdigit():
+					return True
+		if i.isdigit():
+			return True
+	return False
 
 #=============================================================================================================================
 #MENU / PROGRAM OPENS
@@ -33,10 +46,15 @@ def simple_random_method():
 
 	#User input for target population size in random
 	population_size_random = raw_input("Enter the size of the target population: ")
+	
 	#if invalid input for population size
 	if not population_size_random.isdigit():
 		print "\nINVALID INPUT: Please input an integer"
 		simple_random_method()
+	elif population_size_random is "0":
+		print "INVALID INPUT: 0 population size not allowed"
+		simple_random_method()
+
 	#valid user input for random size
 	global random_pop
 	if population_size_random.isdigit():
@@ -53,6 +71,9 @@ def simple_random_method():
 			take_random()
 		elif int(take_random_no) > random_pop:
 			print "INVALID INPUT: Number of sample to take should not be greater than the number of population"
+			take_random()
+		elif take_random_no is "0":
+			print "INVALID INPUT: 0 not allowed"
 			take_random()
 		else:
 			global take_random_int
@@ -76,15 +97,15 @@ def simple_random_method():
 			print "INVALID INPUT: Did not reflect the population size inputted"
 			random_sampling_frame()
 		#check if all integer
-		if el_list_frame_random[0].isdigit():
+		if digit_ni_sya(el_list_frame_random[0]):
 			for i in el_list_frame_random:
-				if not i.isdigit():
+				if not digit_ni_sya(i):
 					print "INVALID INPUT: mixed item type not allowed"
 					random_sampling_frame()
 		#check if all character
-		if not el_list_frame_random[0].isdigit():
+		if not digit_ni_sya(el_list_frame_random[0]):
 			for a in el_list_frame_random:
-				if a.isdigit():
+				if digit_ni_sya(a):
 					print "INVALID INPUT: mixed item type not allowed"
 					random_sampling_frame()
 
@@ -137,7 +158,9 @@ def systematic_method():
 	if not population_size_systematic.isdigit():
 		print "\nINVALID INPUT: Please input an integer"
 		systematic_method()
-
+	elif population_size_systematic is "0":
+		print "INVALID INPUT: 0 population size not allowed"
+		systematic_method()
 	#valid user input for systematic size
 	global systematic_pop
 	if population_size_systematic.isdigit():
@@ -186,16 +209,17 @@ def systematic_method():
 		if len(el_list_frame_systematic) is not systematic_pop:
 			print "INVALID INPUT: Did not reflect the population size inputted"
 			systematic_sampling_frame()
+
 		#check if all integer
-		if el_list_frame_systematic[0].isdigit():
+		if digit_ni_sya(el_list_frame_systematic[0]):
 			for i in el_list_frame_systematic:
-				if not i.isdigit():
+				if not digit_ni_sya(i):
 					print "INVALID INPUT: mixed item type not allowed"
 					systematic_sampling_frame()
 		#check if all character
-		if not el_list_frame_systematic[0].isdigit():
+		if not digit_ni_sya(el_list_frame_systematic[0]):
 			for a in el_list_frame_systematic:
-				if a.isdigit():
+				if digit_ni_sya(a):
 					print "INVALID INPUT: mixed item type not allowed"
 					systematic_sampling_frame()
 
@@ -252,6 +276,9 @@ def stratified_method():
 	if not population_size_stratified.isdigit():
 		print "\nINVALID INPUT: Please input an integer"
 		systematic_method()
+	elif population_size_stratified is "0":
+		print "INVALID INPUT: 0 population size not allowed"
+		stratified_method()
 
 	#valid user input for stratified size
 	global stratified_pop
@@ -267,21 +294,16 @@ def stratified_method():
 		global el_list_frame_stratified
 		el_list_frame_stratified = stratified_frame.split()
 
-		#if invalid input for stratified sampling frame
-		#check if exact population size
-		if len(el_list_frame_stratified) is not stratified_pop:
-			print "INVALID INPUT: Did not reflect the population size inputted"
-			stratified_sampling_frame()
 		#check if all integer
-		if el_list_frame_stratified[0].isdigit():
+		if digit_ni_sya(el_list_frame_stratified[0]):
 			for i in el_list_frame_stratified:
-				if not i.isdigit():
+				if not digit_ni_sya(i):
 					print "INVALID INPUT: mixed item type not allowed"
 					stratified_sampling_frame()
 		#check if all character
-		if not el_list_frame_stratified[0].isdigit():
+		if not digit_ni_sya(el_list_frame_stratified[0]):
 			for a in el_list_frame_stratified:
-				if a.isdigit():
+				if digit_ni_sya(a):
 					print "INVALID INPUT: mixed item type not allowed"
 					stratified_sampling_frame()
 
@@ -292,7 +314,7 @@ def stratified_method():
 	def separate_strata():
 
 		#if given frame are integers
-		if el_list_frame_stratified[0].isdigit():
+		if digit_ni_sya(el_list_frame_stratified[0]):
 			
 			global even_strata
 			even_strata = []
@@ -306,7 +328,7 @@ def stratified_method():
 					odd_strata.append(i)
 
 		#if given frame are characters
-		if not el_list_frame_stratified[0].isdigit():
+		if not digit_ni_sya(el_list_frame_stratified[0]):
 
 			global vowel_strata
 			vowel_strata = []
@@ -315,9 +337,9 @@ def stratified_method():
 
 			for i in el_list_frame_stratified:
 				if i[0] not in ("a", "e", "i", "o", "u", "A", "E", "I", "O", "U"):
-					vowel_strata.append(i)
-				else:
 					consonant_strata.append(i)
+				else:
+					vowel_strata.append(i)
 
 	#run to separate the inputted frame into different strata
 	separate_strata()
@@ -325,7 +347,7 @@ def stratified_method():
 	def stratified_result():
 
 		#user input for percentage to take from every strata from the sampling frame
-		percent_to_take = raw_input("\nEnter the percentage you wish to take from each strata of the sampling frame (input a positive number as [number]%) : ")
+		percent_to_take = raw_input("\nEnter the percentage you wish to take from each strata of the sampling frame (input a positive number as [number]%): ")
 
 		#if user did'nt input an integer
 		if not percent_to_take.isdigit():
@@ -337,11 +359,13 @@ def stratified_method():
 		items_to_take_stratified = int(stratified_pop * (int(percent_to_take) * .01))
 
 		#result if sampling frame inputted is integer
-		if el_list_frame_stratified[0].isdigit():
+		if digit_ni_sya(el_list_frame_stratified[0]):
+			x = items_to_take_stratified
+
 			even_strata_sample = []
 			odd_strata_sample = []
-			#global items_to_take_stratified
-			while items_to_take_stratified is not 0:
+			
+			while x is not 0:
 				pick_even = random.choice(even_strata)
 				pick_odd = random.choice(odd_strata)
 
@@ -351,7 +375,7 @@ def stratified_method():
 				even_strata.remove(pick_even)
 				odd_strata.remove(pick_odd)
 
-				items_to_take_stratified -= 1
+				x -= 1
 
 			print "\nSTRATIFIED SAMPLE: \n"
 			print "Even Strata: "
@@ -360,11 +384,13 @@ def stratified_method():
 			print odd_strata_sample
 
 		#result if sampling frame inputted is not integer
-		if not el_list_frame_stratified[0].isdigit():
+		if not digit_ni_sya(el_list_frame_stratified[0]):
+			y = items_to_take_stratified
+			
 			vowel_strata_sample = []
 			consonant_strata_sample = []
-			#global items_to_take_stratified
-			while items_to_take_stratified is not 0:
+			
+			while y is not 0:
 				pick_vowel = random.choice(vowel_strata)
 				pick_consonant = random.choice(consonant_strata)
 
@@ -374,12 +400,12 @@ def stratified_method():
 				vowel_strata.remove(pick_vowel)
 				consonant_strata.remove(pick_consonant)
 
-				items_to_take_stratified -= 1
+				y -= 1
 
 			print "\nSTRATIFIED SAMPLE: \n"
-			print "Vowel Strata: "
+			print "Vowel (First Character) Strata: "
 			print vowel_strata_sample
-			print "Consonant Strata: "
+			print "Consonant (First Character) Strata: "
 			print consonant_strata_sample
 
 	#run the stratified result
@@ -419,4 +445,4 @@ if menu_response is "3":
 
 #if user wants to terminate the program
 if menu_response is "4":
-	raise SystemExit
+	os.system('cls')
